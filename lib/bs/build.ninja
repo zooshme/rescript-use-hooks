@@ -1,0 +1,19 @@
+rescript = 1
+g_finger := /Users/ovimacstudio/apps/zooshme/npm-modules/rescript-usehooks/node_modules/@rescript/core/lib/ocaml/install.stamp
+g_finger := /Users/ovimacstudio/apps/zooshme/npm-modules/rescript-usehooks/node_modules/@rescript/react/lib/ocaml/install.stamp
+rule astj
+  command = /Users/ovimacstudio/apps/zooshme/npm-modules/rescript-usehooks/node_modules/.pnpm/registry.npmjs.org+rescript@11.1.1/node_modules/rescript/darwinarm64/bsc.exe -w -22 -bs-v 11.1.1 -bs-jsx 4 -bs-jsx-mode automatic -uncurried -open RescriptCore -absname -bs-ast -o $out $i
+o ./src/Hooks.ast : astj ../.././src/Hooks.res
+rule deps
+  command = /Users/ovimacstudio/apps/zooshme/npm-modules/rescript-usehooks/node_modules/.pnpm/registry.npmjs.org+rescript@11.1.1/node_modules/rescript/darwinarm64/bsb_helper.exe -hash 10ca0ac8f2cf93347eb9bb2146503e02 -bs-ns UseHooks $in
+  restat = 1
+o ./src/Hooks.d : deps ./src/Hooks.ast
+rule mij
+  command = /Users/ovimacstudio/apps/zooshme/npm-modules/rescript-usehooks/node_modules/.pnpm/registry.npmjs.org+rescript@11.1.1/node_modules/rescript/darwinarm64/bsc.exe -bs-ns UseHooks -I . -I ./src -I /Users/ovimacstudio/apps/zooshme/npm-modules/rescript-usehooks/node_modules/@rescript/core/lib/ocaml -I /Users/ovimacstudio/apps/zooshme/npm-modules/rescript-usehooks/node_modules/@rescript/react/lib/ocaml -open RescriptCore -w -22 -uncurried -bs-package-name @zooshme/rescript-use-hooks -bs-package-output esmodule:$in_d:.res.mjs -bs-v $g_finger $i
+  dyndep = 1
+  restat = 1
+o ./src/Hooks-UseHooks.cmj ./src/Hooks-UseHooks.cmi ../.././src/Hooks.res.mjs : mij ./src/Hooks.ast
+rule build_package
+  command = /Users/ovimacstudio/apps/zooshme/npm-modules/rescript-usehooks/node_modules/.pnpm/registry.npmjs.org+rescript@11.1.1/node_modules/rescript/darwinarm64/bsc.exe -w -49 -color always -no-alias-deps  $i
+  restat = 1
+o UseHooks.cmi : build_package UseHooks.mlmap
